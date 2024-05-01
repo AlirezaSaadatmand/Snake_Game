@@ -30,6 +30,14 @@ eaten = True
 # Score
 score = 0
 
+# Main game flag
+game_over = True
+
+# difficality 
+difficality = ""
+
+intro = True
+
 def draw():      # Draw everything
     
     r = 0
@@ -79,9 +87,7 @@ def draw():      # Draw everything
         if i == snake[-1]:
             surface.fill("black")
         screen.blit(surface , surface_rect)    
-    
-    
-    
+       
 def  moveSnake(touched):      # Move the snake
     global goingRight
     global goingLeft
@@ -95,29 +101,28 @@ def  moveSnake(touched):      # Move the snake
         snake.remove(snake[0])
     
     if goingRight:
-        if x + UNIT >= WIDTH :
+        if x + UNIT >= WIDTH and difficality == "easy" :
             part = [0 , y]
         else:
             part = [x + UNIT , y] 
     if goingLeft:
-        if x - UNIT < 0 :
+        if x - UNIT < 0 and difficality == "easy":
             part = [WIDTH , y]
         else:
             part = [x - UNIT , y]    
     if goingUp:
-        if  y - UNIT < 0 :
+        if  y - UNIT < 0 and difficality == "easy":
             part = [x , HEIGHT]
         else:
             part = [x , y - UNIT] 
     if goingDown:
-        if y + UNIT >= HEIGHT :
+        if y + UNIT >= HEIGHT and difficality == "easy":
             part = [x , 0]
         else:
             part = [x , y + UNIT]
     
     snake.append(part)
-        
-        
+              
 def createFood():      # Make a random food
     x = (random.randint(1 , WIDTH // UNIT) * UNIT) - UNIT
     y = (random.randint(1 , HEIGHT // UNIT) * UNIT) - UNIT
@@ -133,6 +138,15 @@ def touch():         # check if the is eaten
     else:
         return False
 
+def check_end_game(snake):
+    global game_over
+    head = snake[-1]
+    new_snake = snake[:len(snake)-1]
+    for part in new_snake:
+        if part == head:
+            game_over = True
+    if (head[0] <= 0 or head[0] >= WIDTH or head[1]  <= 0 or head[1] >= HEIGHT) and difficality == "hard":
+        game_over = True
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH , HEIGHT))
@@ -140,6 +154,32 @@ pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
 text = pygame.font.Font(None , 50)
+
+
+#intro screen
+surface = pygame.Surface((WIDTH , HEIGHT))
+surface.fill("orange")
+surface_rect = surface.get_rect(center = (WIDTH // 2 , HEIGHT // 2))
+wellcome_text = pygame.font.Font(None , 30)
+wellcome_text = wellcome_text.render("Snake" , True , "black")
+wellcome_rect = wellcome_text.get_rect(center = (WIDTH // 2 , 150))
+
+block_surface = pygame.Surface( (200 , 200) )
+block_rect = block_surface.get_rect(center = (300 , 400))
+computer_text = pygame.font.Font(None , 30)
+computer_text = computer_text.render("Hard" , True , "black")
+computer_rect = computer_text.get_rect(center = (300 , 400))
+block_surface.fill("black")
+
+
+block2_surface = pygame.Surface( (200 , 200) )
+block2_rect = block2_surface.get_rect(center = (WIDTH - 300 , 400))
+firend_text = pygame.font.Font(None , 30)
+firend_text = firend_text.render("Easy" , True , "black")
+firend_rect = firend_text.get_rect(center = (WIDTH - 300 , 400))
+block2_surface.fill("black")
+
+
 
 
 counter = 0
@@ -166,25 +206,51 @@ while True:
                 goingLeft = True
                 goingUp = False
                 goingDown = False
-
-    
-    if counter % 6 == 0:
-        if touch():
-            moveSnake(True)
-            score += 10
-            eaten = True
-        else:
-            moveSnake(False)
-            
+        if event.type == pygame.MOUSEBUTTONDOWN and intro:
+            if block_rect.collidepoint(pos):
+                difficality = "hard"
+                intro = False
+                game_over = False
+            if block2_rect.collidepoint(pos):
+                difficality = "easy"
+                intro = False
+                game_over = False
+    if intro:
+        pos = pygame.mouse.get_pos()
+        color1 = (0 , 0 , 0)
+        color2 = (0 , 0 , 0)
+        if block_rect.collidepoint(pos):
+            color1 = (90 , 90 , 90)
+        if block2_rect.collidepoint(pos):
+            color2 = (90 , 90 , 90)
         
-        if eaten:
-            food = createFood()
-            eaten = False
-        draw()
-        score_text = text.render(str(score) , True , "black")
-        screen.blit(score_text , (20 , 20))
+        surface.blit(wellcome_text , wellcome_rect)
+        pygame.draw.rect(surface ,color1, block_rect , 3 , 10)
+        pygame.draw.rect(surface ,color2, block2_rect , 3 , 10)
+        surface.blit(computer_text , computer_rect)
+        surface.blit(firend_text , firend_rect)
+        screen.blit(surface , surface_rect)
+        pygame.display.update()    
 
-        pygame.display.update()
-    counter += 1
-        
+    else:
+        if not game_over:    
+            if counter % 6 == 0:
+                if touch():
+                    moveSnake(True)
+                    score += 10
+                    eaten = True
+                else:
+                    moveSnake(False)
+                    
+                
+                if eaten:
+                    food = createFood()
+                    eaten = False
+                draw()
+                score_text = text.render(str(score) , True , "black")
+                screen.blit(score_text , (20 , 20))
+                check_end_game(snake)
+                pygame.display.update()    
+                
+            counter += 1
     clock.tick(60)

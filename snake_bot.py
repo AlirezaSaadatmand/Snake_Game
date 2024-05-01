@@ -31,8 +31,6 @@ eaten = True
 # Score
 score = 0
 
-
-
 def draw():      # Draw everything
     
     r = 0
