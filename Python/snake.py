@@ -87,6 +87,8 @@ def draw():      # Draw everything
         if i == snake[-1]:
             surface.fill("black")
         screen.blit(surface , surface_rect)    
+        pygame.draw.rect(screen ,"black", surface_rect , 1 , 0)
+
        
 def  moveSnake(touched):      # Move the snake
     global goingRight
