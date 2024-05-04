@@ -2,7 +2,7 @@ Simple snake game both in Python / pygame and Javascript / canvas
 
 
 Python :
-![Screenshot 2024-05-03 030315](https://github.com/AlirezaSaadatmand/Snake_Game/assets/157215281/16814d2b-5114-46a9-9e5b-a2ff908d9e10)
+![Screenshot 2024-05-04 015155](https://github.com/AlirezaSaadatmand/Snake_Game/assets/157215281/893d62bc-c892-4987-ac2a-d0ad551dc841)
 
 
 Javascript :
