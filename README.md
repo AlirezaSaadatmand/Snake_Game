@@ -1,5 +1,6 @@
 Simple snake game both in Python / pygame and Javascript / canvas
 
+there is also a "bot" that plays itself
 
 Python :
 ![Screenshot 2024-05-04 015155](https://github.com/AlirezaSaadatmand/Snake_Game/assets/157215281/893d62bc-c892-4987-ac2a-d0ad551dc841)
