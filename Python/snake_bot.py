@@ -156,15 +156,13 @@ def touch():         # check if the is eaten
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH , HEIGHT))
-pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
 text = pygame.font.Font(None , 50)
 
-
 counter = 0
 while True:
-    
+    pygame.display.set_caption(f" FPS : {round(clock.get_fps())} Snake Bot")
     screen.fill("orange")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
