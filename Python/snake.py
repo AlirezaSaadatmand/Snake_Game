@@ -89,7 +89,6 @@ def draw():      # Draw everything
         screen.blit(surface , surface_rect)    
         pygame.draw.rect(screen ,"black", surface_rect , 1 , 0)
 
-       
 def  moveSnake(touched):      # Move the snake
     global goingRight
     global goingLeft
@@ -152,11 +151,9 @@ def check_end_game(snake):
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH , HEIGHT))
-pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
 text = pygame.font.Font(None , 50)
-
 
 #intro screen
 surface = pygame.Surface((WIDTH , HEIGHT))
@@ -186,6 +183,7 @@ block2_surface.fill("black")
 
 counter = 0
 while True:
+    pygame.display.set_caption(f" FPS : {round(clock.get_fps())} Snake")
     screen.fill("orange")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
