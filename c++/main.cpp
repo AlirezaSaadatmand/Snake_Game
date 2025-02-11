@@ -7,6 +7,22 @@ const int HEIGHT = 700;
 
 const int UNIT = 25;
 
+Vector2 food;
+
+int createFood(std::vector<Vector2> parts , Vector2&food){
+    int x = GetRandomValue(0 , WIDTH / UNIT - 1);
+    int y = GetRandomValue(0 , HEIGHT / UNIT - 1);
+
+    for (auto part : parts){
+        if (part.x == x && part.y == y){
+            createFood(parts, food);
+            return 0;
+        }
+    }
+    food = {x, y};
+    return 1;
+}
+
 class Snake {
     public:
         std::vector<Vector2> parts;
@@ -50,17 +66,23 @@ class Snake {
             else if (right) { part.x += UNIT; }
             else if (left) { part.x -= UNIT; }
 
-            parts.erase(parts.begin() + size);
+            if (part.x == food.x && part.y == food.y){
+                createFood(parts , food);
+                std::cout << "hello";
+            } else {
+                parts.erase(parts.begin() + size);
+            }
             parts.insert(parts.begin(), part);
             
         }
 
         void Draw() {
             for (int i = 0 ; i < parts.size() ; i++){
-                DrawRectangle(parts[i].x , parts[i].y , UNIT , UNIT , Color{255, 0, 0, 255});
+                DrawRectangle(parts[i].x , parts[i].y , UNIT , UNIT , Color{0, 255, 0, 255});
             }
         }
 };
+
 
 int main(){
 
@@ -69,10 +91,14 @@ int main(){
 
     Snake snake;
 
+    createFood(snake.parts , food);
+
     while(!WindowShouldClose()) {
         BeginDrawing();
 
         DrawRectangle(0, 0, WIDTH, HEIGHT, Color{0, 0, 0, 250});
+
+        DrawRectangle(food.x * UNIT , food.y * UNIT , UNIT , UNIT , Color{255, 0, 0, 255});
 
         snake.Move();
         snake.Draw();
