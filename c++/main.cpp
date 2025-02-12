@@ -6,6 +6,7 @@ const int WIDTH = 1200;
 const int HEIGHT = 700;
 
 const int UNIT = 25;
+int score = 0;
 
 Vector2 food;
 
@@ -68,6 +69,7 @@ class Snake {
 
             if (part.x == food.x && part.y == food.y){
                 size++;
+                score++;
                 createFood(parts , food);
             } else {
                 parts.erase(parts.begin() + size);
@@ -101,15 +103,18 @@ int main(){
     InitWindow(WIDTH , HEIGHT , "Snake game");
     SetTargetFPS(15);
 
+
     Snake snake;
 
     createFood(snake.parts , food);
 
     while(!WindowShouldClose()) {
-        BeginDrawing();
 
+
+        BeginDrawing();
         DrawRectangle(0, 0, WIDTH, HEIGHT, Color{0, 0, 0, 250});
 
+        DrawText(TextFormat("Score: %d", score), 20, 20, 30, WHITE);
         DrawRectangle(food.x , food.y , UNIT , UNIT , Color{255, 0, 0, 255});
         
         snake.Move();
