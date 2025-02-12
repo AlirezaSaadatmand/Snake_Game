@@ -9,17 +9,17 @@ const int UNIT = 25;
 
 Vector2 food;
 
-int createFood(std::vector<Vector2> parts , Vector2&food){
+int createFood(std::vector<Vector2> parts , Vector2& food) {
     int x = GetRandomValue(0 , WIDTH / UNIT - 1);
     int y = GetRandomValue(0 , HEIGHT / UNIT - 1);
 
-    for (auto part : parts){
-        if (part.x == x && part.y == y){
+    for (auto part : parts) {
+        if (part.x == x * UNIT && part.y == y * UNIT) {
             createFood(parts, food);
             return 0;
         }
     }
-    food = {x, y};
+    food = {x * UNIT, y * UNIT};
     return 1;
 }
 
@@ -67,8 +67,8 @@ class Snake {
             else if (left) { part.x -= UNIT; }
 
             if (part.x == food.x && part.y == food.y){
+                size++;
                 createFood(parts , food);
-                std::cout << "hello";
             } else {
                 parts.erase(parts.begin() + size);
             }
@@ -98,8 +98,8 @@ int main(){
 
         DrawRectangle(0, 0, WIDTH, HEIGHT, Color{0, 0, 0, 250});
 
-        DrawRectangle(food.x * UNIT , food.y * UNIT , UNIT , UNIT , Color{255, 0, 0, 255});
-
+        DrawRectangle(food.x , food.y , UNIT , UNIT , Color{255, 0, 0, 255});
+        
         snake.Move();
         snake.Draw();
         EndDrawing();
