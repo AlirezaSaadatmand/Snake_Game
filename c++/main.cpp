@@ -81,6 +81,7 @@ class Snake {
         void Draw() {
             for (int i = 0 ; i < parts.size() ; i++){
                 DrawRectangle(parts[i].x , parts[i].y , UNIT , UNIT , Color{0, 255, 0, 255});
+                DrawRectangleLines(parts[i].x, parts[i].y, UNIT, UNIT, BROWN);
             }
         }
 };
@@ -116,6 +117,7 @@ int main(){
 
         DrawText(TextFormat("Score: %d", score), 20, 20, 30, WHITE);
         DrawRectangle(food.x , food.y , UNIT , UNIT , Color{255, 0, 0, 255});
+        
         
         snake.Move();
         snake.Draw();
