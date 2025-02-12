@@ -35,8 +35,8 @@ class Snake {
 
         Snake() {
             parts.push_back({4 * UNIT , 4 * UNIT});
-            parts.push_back({5 * UNIT , 4 * UNIT});
-            parts.push_back({6 * UNIT , 4 * UNIT});
+            // parts.push_back({5 * UNIT , 4 * UNIT});
+            // parts.push_back({6 * UNIT , 4 * UNIT});
         }
 
         void reset() {
@@ -83,6 +83,18 @@ class Snake {
         }
 };
 
+int checkEndGame(std::vector<Vector2>& parts){
+    Vector2 head = parts[0];
+    if (head.x < 0 || head.x > WIDTH || head.y < 0 || head.y > HEIGHT){
+        return 1;
+    }
+    for (int i = 1 ; i < parts.size() ; i++){
+        if (head.x == parts[i].x && head.y == parts[i].y){
+            return 1;
+        }
+    }
+    return 0;
+}
 
 int main(){
 
@@ -103,6 +115,9 @@ int main(){
         snake.Move();
         snake.Draw();
         EndDrawing();
+        if (checkEndGame(snake.parts)){
+            break;
+        }  
     }
     CloseWindow();
     return 0;
