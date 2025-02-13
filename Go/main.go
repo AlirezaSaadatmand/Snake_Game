@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -9,6 +10,8 @@ import (
 const UNIT = 25
 const WIDTH = 1200
 const HEIGHT = 700
+
+var score = 0
 
 var foodX int
 var foodY int
@@ -60,6 +63,7 @@ func snakeMove(snake *Snake) {
 		head.x -= UNIT
 	}
 	if head.x == foodX && head.y == foodY {
+		score++
 		createFood(*snake)
 	} else {
 		snake.parts = snake.parts[1:]
@@ -69,8 +73,8 @@ func snakeMove(snake *Snake) {
 }
 
 func createFood(snake Snake) {
-	x := int(rl.GetRandomValue(0, WIDTH/UNIT-1))
-	y := int(rl.GetRandomValue(0, HEIGHT/UNIT-1))
+	x := int(rl.GetRandomValue(0, WIDTH/UNIT-1)) * UNIT
+	y := int(rl.GetRandomValue(0, HEIGHT/UNIT-1)) * UNIT
 
 	for _, part := range snake.parts {
 		if part.x == x && part.y == y {
@@ -78,8 +82,8 @@ func createFood(snake Snake) {
 			return
 		}
 	}
-	foodX = x * UNIT
-	foodY = y * UNIT
+	foodX = x
+	foodY = y
 }
 
 func main() {
@@ -101,6 +105,8 @@ func main() {
 
 		rl.DrawRectangle(int32(foodX), int32(foodY), UNIT, UNIT, color.RGBA{255, 0, 0, 255})
 
+		rl.DrawText(fmt.Sprintf("Score: %d", score), 20, 20, 30, rl.White)
+
 		snakeMove(&snake)
 		for i := 0; i < len(snake.parts); i++ {
 			partColor := color.RGBA{0, 255, 0, 255}
@@ -108,6 +114,7 @@ func main() {
 				partColor = color.RGBA{0, 0, 0, 255}
 			}
 			rl.DrawRectangle(int32(snake.parts[i].x), int32(snake.parts[i].y), int32(UNIT), int32(UNIT), partColor)
+			rl.DrawRectangleLines(int32(snake.parts[i].x), int32(snake.parts[i].y), int32(UNIT), int32(UNIT), color.RGBA{0, 0, 0, 255})
 		}
 		rl.EndDrawing()
 	}
