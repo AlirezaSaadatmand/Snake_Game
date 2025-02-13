@@ -1,10 +1,16 @@
-Simple snake game both in Python / pygame and Javascript / canvas
+# 🐍 Snake Game
 
-there is also a "bot" that plays itself
+Welcome to the **Snake Game** repository! This project contains multiple implementations of the classic Snake game using different programming languages.
 
-Python :
-![Screenshot 2024-05-04 015155](https://github.com/AlirezaSaadatmand/Snake_Game/assets/157215281/893d62bc-c892-4987-ac2a-d0ad551dc841)
+## 📌 Available Versions
 
+- [Python (Pygame) Version](python/README.md) 🐍
+- [JavaScript (HTML & Canvas) Version](javascript/README.md) 🎨
+- [C++ Version](C++/README.md) 
+- [Go Version](go/README.md) 🟢
 
-Javascript :
-![Screenshot 2024-05-03 030405](https://github.com/AlirezaSaadatmand/Snake_Game/assets/157215281/b40fb898-a1fd-4b94-aa6a-276952c3c32d)
+Each version has its own `README.md` file with installation and usage instructions.
+
+## 🎮 Game Overview
+
+The Snake game is a simple yet fun arcade game where the player controls a growing snake that must eat food while avoiding collisions with itself and the game boundaries.
