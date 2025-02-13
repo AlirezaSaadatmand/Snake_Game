@@ -12,6 +12,7 @@ const WIDTH = 1200
 const HEIGHT = 700
 
 var score = 0
+var gameOver = false
 
 var foodX int
 var foodY int
@@ -37,16 +38,20 @@ func reset(snake *Snake) {
 }
 
 func snakeMove(snake *Snake) {
-	if rl.IsKeyDown(rl.KeyUp) && !snake.goingDown {
+	if gameOver {
+		return
+	}
+	fmt.Println("hello world")
+	if (rl.IsKeyDown(rl.KeyUp) || rl.IsKeyDown(rl.KeyW)) && !snake.goingDown {
 		reset(snake)
 		snake.goingUp = true
-	} else if rl.IsKeyDown(rl.KeyDown) && !snake.goingUp {
+	} else if (rl.IsKeyDown(rl.KeyDown) || rl.IsKeyDown(rl.KeyS)) && !snake.goingUp {
 		reset(snake)
 		snake.goingDown = true
-	} else if rl.IsKeyDown(rl.KeyRight) && !snake.goingLeft {
+	} else if (rl.IsKeyDown(rl.KeyRight) || rl.IsKeyDown(rl.KeyD)) && !snake.goingLeft {
 		reset(snake)
 		snake.goingRight = true
-	} else if rl.IsKeyDown(rl.KeyLeft) && !snake.goingRight {
+	} else if (rl.IsKeyDown(rl.KeyLeft) || rl.IsKeyDown(rl.KeyA)) && !snake.goingRight {
 		reset(snake)
 		snake.goingLeft = true
 	}
@@ -62,6 +67,9 @@ func snakeMove(snake *Snake) {
 	} else if snake.goingLeft {
 		head.x -= UNIT
 	}
+
+	gameOver = checkCollistion(*snake, head)
+
 	if head.x == foodX && head.y == foodY {
 		score++
 		createFood(*snake)
@@ -86,12 +94,26 @@ func createFood(snake Snake) {
 	foodY = y
 }
 
+func checkCollistion(snake Snake, head Part) bool {
+	if head.x < 0 || head.x >= WIDTH || head.y < 0 || head.y >= HEIGHT {
+		return true
+	}
+
+	for i := 0; i < len(snake.parts)-1; i++ {
+		if head.x == snake.parts[i].x && head.y == snake.parts[i].y {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 
 	snake := Snake{}
 	snake.parts = append(snake.parts, Part{x: UNIT * 3, y: UNIT * 3})
 	snake.parts = append(snake.parts, Part{x: UNIT * 4, y: UNIT * 3})
 	snake.parts = append(snake.parts, Part{x: UNIT * 5, y: UNIT * 3})
+	snake.goingRight = true
 
 	createFood(snake)
 
