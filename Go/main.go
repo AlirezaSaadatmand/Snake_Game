@@ -75,10 +75,14 @@ func main() {
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
+		rl.ClearBackground(color.RGBA{34, 40, 49, 255})
 		snakeMove(&snake)
 		for i := 0; i < len(snake.parts); i++ {
-			rl.DrawRectangle(int32(snake.parts[i].x), int32(snake.parts[i].y), int32(UNIT), int32(UNIT), color.RGBA{255, 0, 0, 255})
+			partColor := color.RGBA{255, 0, 0, 255}
+			if i == len(snake.parts)-1 {
+				partColor = color.RGBA{0, 0, 0, 255}
+			}
+			rl.DrawRectangle(int32(snake.parts[i].x), int32(snake.parts[i].y), int32(UNIT), int32(UNIT), partColor)
 		}
 		rl.EndDrawing()
 	}
