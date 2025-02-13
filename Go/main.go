@@ -59,14 +59,18 @@ func snakeMove(snake *Snake) {
 	} else if snake.goingLeft {
 		head.x -= UNIT
 	}
-	snake.parts = snake.parts[1:]
+	if head.x == foodX && head.y == foodY {
+		createFood(*snake)
+	} else {
+		snake.parts = snake.parts[1:]
+	}
 	snake.parts = append(snake.parts, head)
 
 }
 
 func createFood(snake Snake) {
-	x := int(rl.GetRandomValue(0, WIDTH/UNIT))
-	y := int(rl.GetRandomValue(0, HEIGHT/UNIT))
+	x := int(rl.GetRandomValue(0, WIDTH/UNIT-1))
+	y := int(rl.GetRandomValue(0, HEIGHT/UNIT-1))
 
 	for _, part := range snake.parts {
 		if part.x == x && part.y == y {
@@ -74,8 +78,8 @@ func createFood(snake Snake) {
 			return
 		}
 	}
-	foodX = x
-	foodY = y
+	foodX = x * UNIT
+	foodY = y * UNIT
 }
 
 func main() {
@@ -95,7 +99,7 @@ func main() {
 		rl.BeginDrawing()
 		rl.ClearBackground(color.RGBA{34, 40, 49, 255})
 
-		rl.DrawRectangle(int32(foodX)*UNIT, int32(foodY)*UNIT, UNIT, UNIT, color.RGBA{255, 0, 0, 255})
+		rl.DrawRectangle(int32(foodX), int32(foodY), UNIT, UNIT, color.RGBA{255, 0, 0, 255})
 
 		snakeMove(&snake)
 		for i := 0; i < len(snake.parts); i++ {
