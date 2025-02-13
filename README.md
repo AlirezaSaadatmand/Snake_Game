@@ -8,7 +8,6 @@ Welcome to the **Snake Game** repository! This project contains multiple impleme
 - [JavaScript Version](Javascript/README.md)
 - [C++ Version](C++/README.md)
 - [Go Version](Go/README.md)
-Each version has its own `README.md` file with installation and usage instructions.
 
 ## 🎮 Game Overview
 
