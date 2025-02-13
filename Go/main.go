@@ -1,13 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 const UNIT = 25
+const WIDTH = 1200
+const HEIGHT = 700
+
+var foodX int
+var foodY int
 
 type Snake struct {
 	parts      []Part
@@ -60,25 +64,42 @@ func snakeMove(snake *Snake) {
 
 }
 
+func createFood(snake Snake) {
+	x := int(rl.GetRandomValue(0, WIDTH/UNIT))
+	y := int(rl.GetRandomValue(0, HEIGHT/UNIT))
+
+	for _, part := range snake.parts {
+		if part.x == x && part.y == y {
+			createFood(snake)
+			return
+		}
+	}
+	foodX = x
+	foodY = y
+}
+
 func main() {
 
 	snake := Snake{}
 	snake.parts = append(snake.parts, Part{x: UNIT * 3, y: UNIT * 3})
 	snake.parts = append(snake.parts, Part{x: UNIT * 4, y: UNIT * 3})
 	snake.parts = append(snake.parts, Part{x: UNIT * 5, y: UNIT * 3})
-	fmt.Println(snake.parts)
 
-	fmt.Println("hello world")
-	rl.InitWindow(1200, 700, "Snake Game")
+	createFood(snake)
+
+	rl.InitWindow(WIDTH, HEIGHT, "Snake Game")
 	rl.SetTargetFPS(15)
 	defer rl.CloseWindow()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(color.RGBA{34, 40, 49, 255})
+
+		rl.DrawRectangle(int32(foodX)*UNIT, int32(foodY)*UNIT, UNIT, UNIT, color.RGBA{255, 0, 0, 255})
+
 		snakeMove(&snake)
 		for i := 0; i < len(snake.parts); i++ {
-			partColor := color.RGBA{255, 0, 0, 255}
+			partColor := color.RGBA{0, 255, 0, 255}
 			if i == len(snake.parts)-1 {
 				partColor = color.RGBA{0, 0, 0, 255}
 			}
