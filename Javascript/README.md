@@ -1,4 +1,4 @@
-# 📜 Snake Game (Python Version)
+# 📜 Snake Game (Javascript Version)
 
 This is the Javascript implementation of the classic Snake Game, built using the canvas.
 
